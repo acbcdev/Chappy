@@ -14,7 +14,7 @@ function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   return (
     <div
       className={cn(
-        "not-prose flex w-full flex-col overflow-clip border",
+        "not-prose flex w-full flex-col overflow-clip border scrs",
         "border-border bg-card text-card-foreground rounded-xl",
         className
       )}
@@ -35,7 +35,7 @@ export type CodeBlockCodeProps = {
 function CodeBlockCode({
   code,
   language = "tsx",
-  theme = "github-light",
+  theme = "one-dark-pro",
   className,
   ...props
 }: CodeBlockCodeProps) {
@@ -55,7 +55,7 @@ function CodeBlockCode({
   }, [code, language, theme]);
 
   const classNames = cn(
-    "w-full overflow-x-auto text-[13px] [&>pre]:px-4 [&>pre]:py-4",
+    "w-full overflow-x-auto text-[13px] [&>pre]:px-4 [&>pre]:py-4 scrs",
     className
   );
 
@@ -63,6 +63,7 @@ function CodeBlockCode({
   return highlightedHtml ? (
     <div
       className={classNames}
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
       dangerouslySetInnerHTML={{ __html: highlightedHtml }}
       {...props}
     />
@@ -84,7 +85,7 @@ function CodeBlockGroup({
 }: CodeBlockGroupProps) {
   return (
     <div
-      className={cn("flex items-center justify-between", className)}
+      className={cn("flex items-center justify-between scrs", className)}
       {...props}
     >
       {children}
