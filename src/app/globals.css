@@ -1,5 +1,8 @@
 @import "tailwindcss";
+
 @import "tw-animate-css";
+
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -121,5 +124,40 @@
 
   body {
     @apply bg-background text-foreground;
+    color-scheme: dark;
+  }
+}
+
+body::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+
+.scrs {
+  --sb-track-color: transparent;
+  --sb-thumb-color: var(--muted);
+  --sb-size: 8px;
+}
+
+.scrs::-webkit-scrollbar {
+  width: var(--sb-size)
+}
+
+.scrs::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: var(--radius-lg);
+}
+
+.scrs::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: var(--radius-lg);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+
+
+  .scrs {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
