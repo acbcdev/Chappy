@@ -45,3 +45,5 @@ pnpm-lock.yaml
 yarn.lock
 package-lock.json
 bun.lock
+# clerk configuration (can include secrets)
+/.clerk/
