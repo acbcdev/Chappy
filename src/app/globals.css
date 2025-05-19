@@ -133,7 +133,6 @@ body::selection {
   color: var(--primary-foreground);
 }
 
-
 .scrs {
   --sb-track-color: transparent;
   --sb-thumb-color: var(--muted);
@@ -155,7 +154,6 @@ body::selection {
 }
 
 @supports not selector(::-webkit-scrollbar) {
-
 
   .scrs {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
