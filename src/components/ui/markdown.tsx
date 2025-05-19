@@ -41,12 +41,12 @@ const INITIAL_COMPONENTS = {
     const language = extractLanguage(className);
 
     return (
-      <CodeBlock className={className}>
+      <CodeBlock className={cn(className, "my-4")}>
         <CodeBlockCode code={children as string} language={language} />
       </CodeBlock>
     );
   },
-  pre: ({ children }) => <>{children}</>,
+  pre: ({ children }) => <pre className="my-4 bg-transparent">{children}</pre>,
   p: ({ children }) => {
     return <p className="my-1 leading-7 ">{children}</p>;
   },
