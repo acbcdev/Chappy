@@ -1,5 +1,5 @@
 "use client";
-import type { UIMessage } from "ai";
+import type { Message as MessageType } from "ai";
 import { Message } from "./message";
 import { useRef } from "react";
 import { PulseDotLoader } from "../ui/loader";
@@ -7,7 +7,7 @@ import { ChatContainer } from "../ui/chat-container";
 import { ScrollButton } from "../ui/scroll-button";
 
 type MessagesProps = {
-  messages: UIMessage[];
+  messages: MessageType[];
   onDelete?: (id: string) => void;
   onEdit?: (id: string, newText: string) => void;
   onReload: () => void;
@@ -16,7 +16,6 @@ type MessagesProps = {
 
 export function Messages({ messages, onReload, status }: MessagesProps) {
   const initialMessageCount = useRef(messages.length);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   // if (!messages || messages.length === 0)
   //   return <div className="h-full w-full" />;
@@ -27,7 +26,6 @@ export function Messages({ messages, onReload, status }: MessagesProps) {
         className="relative  flex-1 scrs  overflow-y-auto   flex w-full flex-col gap-y-5 items-center pt-20 pb-4  "
         autoScroll
         ref={containerRef}
-        scrollToRef={scrollRef}
         style={{
           scrollbarGutter: "stable both-edges",
         }}
@@ -76,7 +74,6 @@ export function Messages({ messages, onReload, status }: MessagesProps) {
         <ScrollButton
           variant={"secondary"}
           className="absolute   top-[-50px] right-[45px]"
-          scrollRef={scrollRef}
           containerRef={containerRef}
         />
       </div>
