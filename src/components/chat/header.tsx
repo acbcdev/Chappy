@@ -17,7 +17,7 @@ export function Header() {
       <div className="flex items-center gap-x-0.5 ">
         <SidebarTrigger />
         <Tooltip delayDuration={400}>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Button variant="ghost" size={"icon"}>
               <Plus />
             </Button>
