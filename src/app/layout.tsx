@@ -1,12 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
-import { dark } from "@clerk/themes";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/chat/sidebar";
 import { Header } from "@/components/chat/header";
+import { Providers } from "@/components/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,31 +28,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }}>
-      <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "19rem",
-          } as React.CSSProperties
-        }
-      >
-        <html lang="en" className="dark">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased `}
-          >
-            <AppSidebar />
-            <SidebarInset>
-              <Header />
-              <div className="bg-background flex h-dvh w-full overflow-hidden">
-                <main className="@container relative h-dvh w-0 flex-shrink flex-grow overflow-y-auto">
-                  {children}
-                  <Toaster />
-                </main>
-              </div>
-            </SidebarInset>
-          </body>
-        </html>
-      </SidebarProvider>
-    </ClerkProvider>
+    <Providers>
+      <html lang="en" className="dark">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased `}
+        >
+          <AppSidebar />
+          <SidebarInset>
+            <Header />
+            <div className="bg-background flex h-dvh w-full overflow-hidden">
+              <main className="@container relative h-dvh w-0 flex-shrink flex-grow overflow-y-auto">
+                {children}
+                <Toaster />
+              </main>
+            </div>
+          </SidebarInset>
+        </body>
+      </html>
+    </Providers>
   );
 }
