@@ -1,3 +1,4 @@
+"use client";
 import type { UIMessage } from "ai";
 import { Message } from "./message";
 import { useRef } from "react";
@@ -31,6 +32,14 @@ export function Messages({ messages, onReload, status }: MessagesProps) {
           scrollbarGutter: "stable both-edges",
         }}
       >
+        {messages.length > 0 && (
+          <div className="absolute bottom-[60%] mx-auto max-w-[50rem] md:relative md:bottom-auto">
+            <h1 className="mb-6 text-3xl font-medium tracking-tight">
+              What's on your mind?
+            </h1>
+          </div>
+        )}
+
         {messages.map((message, index) => {
           const isLast =
             index === messages.length - 1 && status !== "submitted";
