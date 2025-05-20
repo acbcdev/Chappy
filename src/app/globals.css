@@ -6,6 +6,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -133,21 +134,29 @@ body::selection {
   color: var(--primary-foreground);
 }
 
+.scroll,
 .scrs {
   --sb-track-color: transparent;
   --sb-thumb-color: var(--muted);
   --sb-size: 8px;
 }
 
+.scroll {
+  --sb-thumb-color: var(--border);
+}
+
+.scroll::-webkit-scrollbar,
 .scrs::-webkit-scrollbar {
   width: var(--sb-size)
 }
 
+.scroll::-webkit-scrollbar-track,
 .scrs::-webkit-scrollbar-track {
   background: var(--sb-track-color);
   border-radius: var(--radius-lg);
 }
 
+.scroll::-webkit-scrollbar-thumb,
 .scrs::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
   border-radius: var(--radius-lg);
@@ -155,6 +164,7 @@ body::selection {
 
 @supports not selector(::-webkit-scrollbar) {
 
+  .scroll,
   .scrs {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
