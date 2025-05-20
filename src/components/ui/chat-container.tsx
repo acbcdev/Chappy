@@ -2,7 +2,7 @@
 
 import { useAutoScroll } from "@/hooks/useAutoScroll";
 import { cn } from "@/lib/utils";
-import { Children, useCallback, useEffect, useRef, useState } from "react";
+import { Children, useEffect, useRef } from "react";
 
 export type ChatContainerProps = {
   children: React.ReactNode;
