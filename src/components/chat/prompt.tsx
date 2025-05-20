@@ -7,7 +7,7 @@ import {
   PromptInputTextarea,
 } from "@/components/ui/prompt-input";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, Square } from "lucide-react";
+import { ArrowUp, CircleStop } from "lucide-react";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { ComboboxSelect } from "./comboboxSelect";
 
@@ -51,7 +51,7 @@ export function Prompt({ input, setInput, status, onSend }: PropsPropmpt) {
         form="chat-form"
         autoFocus
         onKeyDown={handleKeyDown}
-        placeholder="Ask me anything..."
+        placeholder="How may I help you?"
       />
 
       <PromptInputActions className="flex items-center justify-between gap-2 pt-2">
@@ -70,7 +70,7 @@ export function Prompt({ input, setInput, status, onSend }: PropsPropmpt) {
             type="submit"
           >
             {isLoading ? (
-              <Square className="size-5 fill-current" />
+              <CircleStop className="size-5 fill-current" />
             ) : (
               <ArrowUp className="size-5" />
             )}
