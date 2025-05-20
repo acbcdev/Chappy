@@ -16,6 +16,7 @@ interface chatStore {
 	removeChat: (id: string) => void;
 	updateChat: (id: string, updatedChat: Partial<Chat>) => void;
 	getChat: (id: string) => Chat | undefined;
+	selectedModel: string;
 }
 const DEFAULT_CHAT: Chat = {
 	id: "1",
@@ -29,6 +30,7 @@ export const useChatStore = create<chatStore>()(
 	persist(
 		(set, get) => ({
 			chats: [],
+			selectedModel: "",
 			addChat: (chat: Chat) =>
 				set((state) => ({ chats: [...state.chats, chat] })),
 			removeChat: (id: string) =>
