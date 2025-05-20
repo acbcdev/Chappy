@@ -54,6 +54,9 @@ export const providers: Record<providerType, { models: modelType[] }> = {
 	},
 };
 
-export const models = Object.values(providers).flatMap(
-	(provider) => provider.models,
+export const models = Object.entries(providers).flatMap(([provider, value]) =>
+	value.models.map((model) => ({
+		provider,
+		...model,
+	})),
 );
