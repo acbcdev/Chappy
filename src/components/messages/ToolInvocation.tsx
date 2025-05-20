@@ -2,7 +2,9 @@ import type { ToolInvocation as ToolInvocationType } from "ai";
 
 //TODO
 export function ToolInvocation({
-  toolInvocations,
+  ...props
 }: {
   toolInvocations: ToolInvocationType;
-}) {}
+}) {
+  return props;
+}
