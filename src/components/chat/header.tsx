@@ -10,7 +10,8 @@ import { Button } from "../ui/button";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Plus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-
+import { DialogDemo } from "../settings/Dialog";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 export function Header() {
   return (
     <header className="flex h-16 w-full justify-between items-center absolute z-10 gap-2 px-2">
@@ -25,7 +26,7 @@ export function Header() {
           <TooltipContent>new chat</TooltipContent>
         </Tooltip>
       </div>
-      <div>
+      <div className="flex items-center gap-x-2">
         <SignedOut>
           <div className="grid grid-cols-2 gap-x-2">
             <SignInButton mode="modal">
@@ -36,10 +37,10 @@ export function Header() {
             </SignUpButton>
           </div>
         </SignedOut>
-
         <SignedIn>
           <UserButton />
         </SignedIn>
+        <DialogDemo />
       </div>
     </header>
   );
