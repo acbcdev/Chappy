@@ -1,22 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/chat/sidebar";
+import { Header } from "@/components/chat/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,9 +43,7 @@ export default function RootLayout({
           >
             <AppSidebar />
             <SidebarInset>
-              <header className="flex h-16 shrink-0 items-center absolute z-10 gap-2 px-2">
-                <SidebarTrigger />
-              </header>
+              <Header />
               <div className="bg-background flex h-dvh w-full overflow-hidden">
                 <main className="@container relative h-dvh w-0 flex-shrink flex-grow overflow-y-auto">
                   {children}
