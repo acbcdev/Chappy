@@ -9,20 +9,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUp, Square } from "lucide-react";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
+import { ComboboxSelect } from "./comboboxSelect";
+
 type PropsPropmpt = {
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
   status: "submitted" | "streaming" | "ready" | "error";
   onSend: () => void;
 };
-
 export function Prompt({ input, setInput, status, onSend }: PropsPropmpt) {
   const isLoading = status === "streaming";
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      // First process agent command related key handling
-
       if (status === "submitted") {
         e.preventDefault();
         return;
@@ -55,7 +54,11 @@ export function Prompt({ input, setInput, status, onSend }: PropsPropmpt) {
         placeholder="Ask me anything..."
       />
 
-      <PromptInputActions className="flex items-center justify-end gap-2 pt-2">
+      <PromptInputActions className="flex items-center justify-between gap-2 pt-2">
+        <PromptInputAction tooltip="Select Model">
+          <ComboboxSelect />
+        </PromptInputAction>
+
         <PromptInputAction
           tooltip={isLoading ? "Stop generation" : "Send message"}
         >
