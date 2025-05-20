@@ -7,7 +7,7 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export type ScrollButtonProps = {
-  scrollRef: React.RefObject<HTMLElement | null>;
+  // scrollRef: React.RefObject<HTMLElement | null>;
   containerRef: React.RefObject<HTMLElement | null>;
   className?: string;
   threshold?: number;
@@ -16,6 +16,7 @@ export type ScrollButtonProps = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 function ScrollButton({
+  // scrollRef,
   containerRef,
   className,
   threshold = 100,
@@ -24,7 +25,6 @@ function ScrollButton({
   ...props
 }: ScrollButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       if (containerRef.current) {
@@ -59,7 +59,7 @@ function ScrollButton({
   return (
     <Button
       variant={variant}
-      size={size}
+      size={size} // <-- Añade el tamaño aquí
       className={cn(
         "h-8 w-8 rounded-full transition-all duration-150 ease-out",
         isVisible
