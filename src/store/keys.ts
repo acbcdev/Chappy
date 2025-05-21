@@ -2,8 +2,8 @@ import type { providerType } from "@/types/provider";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface KeyStore {
-	keys: Record<providerType, string | null>;
+export interface KeyStore {
+	keys: Record<providerType, string>;
 	addKey: (key: string, provider: providerType) => void;
 }
 
@@ -11,11 +11,11 @@ export const useKeysStore = create<KeyStore>()(
 	persist(
 		(set) => ({
 			keys: {
-				openai: null,
-				google: null,
-				anthropic: null,
-				mistral: null,
-				xai: null,
+				openai: "",
+				google: "",
+				anthropic: "",
+				mistral: "",
+				xai: "",
 			},
 			addKey: (key, provider) =>
 				set((state) => ({

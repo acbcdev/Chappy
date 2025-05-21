@@ -39,10 +39,12 @@ export type OpenProvidersOptions<T extends SupportedModel> = ModelSettings<T>;
 
 export function ai<T extends SupportedModel>(
 	modelId: T,
-	settings?: OpenProvidersOptions<T> & { key: string },
+	settings?: OpenProvidersOptions<T> & { key: string | null },
 ): LanguageModelV1 {
 	const provider = getProviderForModel(modelId);
-
+	if (settings?.key === null) {
+		throw new Error(`API key is required for ${provider}`);
+	}
 	if (provider === "openai") {
 		const openai = createOpenAI({ apiKey: settings?.key });
 		return openai(modelId as OpenAIModel, settings as OpenAIChatSettings);

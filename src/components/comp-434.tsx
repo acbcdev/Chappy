@@ -60,7 +60,7 @@ export function SettingsTabs() {
                     type="password"
                     value={keys[provider.id] ?? ""}
                     placeholder={`Enter ${provider.name} API key`}
-                    onChange={(e) => addKey(e.target.value, provider.id)}
+                    onChange={(e) => addKey(e.target.value.trim(), provider.id)}
                   />
                 </div>
               ))}

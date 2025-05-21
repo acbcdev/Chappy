@@ -12,7 +12,7 @@ type Chat = {
 	totalTokens: number;
 };
 
-interface chatStore {
+export interface chatStore {
 	chats: Chat[];
 	addChat: (chat: Chat) => void;
 	removeChat: (id: string) => void;
@@ -54,7 +54,7 @@ export const useChatStore = create<chatStore>()(
 						provider,
 					},
 				})),
-			addChat: (chat) => set((state) => ({ chats: [...state.chats, chat] })),
+			addChat: (chat) => set((state) => ({ chats: [chat, ...state.chats] })),
 			removeChat: (id) =>
 				set((state) => ({
 					chats: state.chats.filter((chat) => chat.id !== id),
