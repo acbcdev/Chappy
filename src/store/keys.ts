@@ -13,6 +13,9 @@ export const useKeysStore = create<KeyStore>()(
 			keys: {
 				openai: null,
 				google: null,
+				anthropic: null,
+				mistral: null,
+				xai: null,
 			},
 			addKey: (key, provider) =>
 				set((state) => ({
