@@ -11,15 +11,25 @@ import { SidebarTrigger } from "../ui/sidebar";
 import { Plus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { DialogDemo } from "../settings/Dialog";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-export function Header() {
+import type { Message as MessageType } from "ai";
+export function Header({
+  setMessages,
+}: {
+  setMessages: (
+    messages: MessageType[] | ((messages: MessageType[]) => MessageType[])
+  ) => void;
+}) {
   return (
     <header className="flex h-16 w-full justify-between items-center absolute z-10 gap-2 px-2">
       <div className="flex items-center gap-x-0.5 ">
         <SidebarTrigger />
         <Tooltip delayDuration={400}>
           <TooltipTrigger asChild>
-            <Button variant="ghost" size={"icon"}>
+            <Button
+              variant="ghost"
+              size={"icon"}
+              onClick={() => setMessages([])}
+            >
               <Plus />
             </Button>
           </TooltipTrigger>

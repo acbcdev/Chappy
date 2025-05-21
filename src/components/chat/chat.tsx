@@ -1,3 +1,4 @@
+"use client";
 import { useChat } from "@ai-sdk/react";
 import { Messages } from "../messages/messages";
 import { Prompt } from "./prompt";
@@ -27,7 +28,7 @@ export function Chat() {
         } else {
           addChat({
             id,
-            name: m.content.split(" ", 3).join(" "),
+            name: messages[0].content.split(" ", 3).join(" "),
             messages: messages,
             createdAt: Date.now(),
             updatedAt: Date.now(),
@@ -36,17 +37,26 @@ export function Chat() {
         }
       },
       body: {
-        model: selectedModel.id,
+        model: selectedModel,
         keys,
       },
     });
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (!keys.openai && !keys.google) {
+    console.log("keys", keys);
+
+    const isEveryKeyEmpty = Object.values(keys).every((key) => {
+      console.log("key", key);
+      return key.trim() === "";
+    });
+    console.log("isEveryKeyEmpty", isEveryKeyEmpty);
+    if (isEveryKeyEmpty) {
       router.push("/?modalOpen=true");
+    } else {
+      router.push("/");
     }
-  }, []);
+  }, [keys]);
 
   return (
     <section className="@container/main relative flex  h-screen flex-col">
