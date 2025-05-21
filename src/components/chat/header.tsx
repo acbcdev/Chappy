@@ -11,25 +11,14 @@ import { SidebarTrigger } from "../ui/sidebar";
 import { Plus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { DialogDemo } from "../settings/Dialog";
-import type { Message as MessageType } from "ai";
-export function Header({
-  setMessages,
-}: {
-  setMessages: (
-    messages: MessageType[] | ((messages: MessageType[]) => MessageType[])
-  ) => void;
-}) {
+export function Header() {
   return (
     <header className="flex h-16 w-full justify-between items-center absolute z-10 gap-2 px-2">
       <div className="flex items-center gap-x-0.5 ">
         <SidebarTrigger />
         <Tooltip delayDuration={400}>
           <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size={"icon"}
-              onClick={() => setMessages([])}
-            >
+            <Button variant="ghost" size={"icon"}>
               <Plus />
             </Button>
           </TooltipTrigger>
@@ -39,6 +28,8 @@ export function Header({
       <div className="flex items-center gap-x-2">
         <SignedOut>
           <div className="grid grid-cols-2 gap-x-2">
+            <DialogDemo />
+
             <SignInButton mode="modal">
               <Button>Sign in</Button>
             </SignInButton>
@@ -48,9 +39,10 @@ export function Header({
           </div>
         </SignedOut>
         <SignedIn>
+          <DialogDemo />
+
           <UserButton />
         </SignedIn>
-        <DialogDemo />
       </div>
     </header>
   );

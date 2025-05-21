@@ -18,7 +18,7 @@ import { models } from "@/const/models";
 import { useState } from "react";
 import { useKeysStore } from "@/store/keys";
 import { getProviderForModel } from "@/lib/ai/map";
-import type { SupportedModel } from "@/types/provider";
+import type { providerType, SupportedModel } from "@/types/provider";
 import { useChatStore } from "@/store/chat";
 
 export function ComboboxSelect() {
@@ -66,7 +66,12 @@ export function ComboboxSelect() {
                     key={model.id}
                     value={model.id}
                     onSelect={(currentValue) => {
-                      changeModel(currentValue, value?.provider || "openai");
+                      console.log(
+                        "Selected model:",
+                        currentValue,
+                        model.provider
+                      );
+                      changeModel(currentValue, model.provider as providerType);
                       setOpen(false);
                     }}
                   >
