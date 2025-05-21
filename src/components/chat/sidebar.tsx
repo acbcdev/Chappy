@@ -9,6 +9,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useChatStore } from "@/store/chat";
+import Link from "next/link";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const chats = useChatStore((state) => state.chats);
@@ -19,7 +20,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             {chats.map((chat) => (
               <SidebarMenuItem key={chat.id}>
-                <SidebarMenuButton>{chat.name}</SidebarMenuButton>
+                <Link href={`/c/${chat.id}`}>
+                  <SidebarMenuButton>{chat.name}</SidebarMenuButton>
+                </Link>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>

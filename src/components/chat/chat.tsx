@@ -5,59 +5,89 @@ import { Prompt } from "./prompt";
 import { toast } from "sonner";
 import { useKeysStore } from "@/store/keys";
 import { useChatStore } from "@/store/chat";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { use, useEffect } from "react";
+import { redirect, usePathname, useRouter } from "next/navigation";
+import { nanoid } from "nanoid";
 
-export function Chat() {
+export function Chat({ chatId }: { chatId?: string }) {
   const router = useRouter();
+  const pathname = usePathname();
   const keys = useKeysStore((state) => state.keys);
   const selectedModel = useChatStore((state) => state.selectedModel);
   const updateChat = useChatStore((state) => state.updateChat);
   const addChat = useChatStore((state) => state.addChat);
   const getChat = useChatStore((state) => state.getChat);
 
-  const { setInput, input, handleSubmit, messages, status, reload, id } =
-    useChat({
-      onError: (error) => {
-        toast.error(error.message);
-      },
-      onFinish: (m, options) => {
-        const chat = getChat(id);
-        if (chat) {
-          updateChat(id, messages, options.usage.totalTokens);
-        } else {
-          addChat({
-            id,
-            name: messages[0].content.split(" ", 3).join(" "),
-            messages: messages,
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-            totalTokens: options.usage.totalTokens,
-          });
-        }
-      },
-      body: {
-        model: selectedModel,
-        keys,
-      },
-    });
+  const currentChat = chatId ? getChat(chatId) : null;
+  if (currentChat === undefined) {
+    return redirect("/");
+  }
+  const {
+    setInput,
+    input,
+    handleSubmit,
+    messages,
+    status,
+    reload,
+    id,
+    setMessages,
+  } = useChat({
+    initialMessages: currentChat?.messages ?? [],
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onFinish: (m, options) => {
+      const i = chatId ?? id;
+      const chat = getChat(id);
+      if (chat) {
+        updateChat(i, messages, options.usage.totalTokens);
+      }
+    },
+    body: {
+      model: selectedModel,
+      keys,
+    },
+  });
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    console.log("keys", keys);
+    if (currentChat) {
+      setMessages(currentChat.messages);
+      setInput("");
+    } else {
+      setMessages([]);
+    }
+  }, [pathname, chatId]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
     const isEveryKeyEmpty = Object.values(keys).every((key) => {
       console.log("key", key);
       return key.trim() === "";
     });
-    console.log("isEveryKeyEmpty", isEveryKeyEmpty);
     if (isEveryKeyEmpty) {
       router.push("/?modalOpen=true");
-    } else {
-      router.push("/");
+    }
+    if (!chatId || !currentChat) {
+      router.push("");
     }
   }, [keys]);
+  const submit = () => {
+    if (messages.length === 0) {
+      const id = nanoid();
+      addChat({
+        id,
+        name: input.split(" ", 3).join(" "),
+        messages: messages,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        totalTokens: 0,
+      });
+      router.push(`/c/${id}`);
+    }
 
+    handleSubmit();
+  };
   return (
     <section className="@container/main relative flex  h-screen flex-col">
       <Messages messages={messages} onReload={reload} status={status} />
@@ -71,7 +101,7 @@ export function Chat() {
             setInput={setInput}
             input={input}
             status={status}
-            onSend={handleSubmit}
+            onSend={submit}
           />
         </form>
       </div>
