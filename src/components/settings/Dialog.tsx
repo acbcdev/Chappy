@@ -23,7 +23,7 @@ export function DialogDemo() {
           <Cog />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] h-96">
+      <DialogContent className="sm:max-w-[425px] min-w-4xl">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>

@@ -1,4 +1,4 @@
-import { Brain, Paintbrush, PanelsTopLeftIcon } from "lucide-react";
+import { Brain, ExternalLink, Paintbrush } from "lucide-react";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +8,7 @@ import { Label } from "./ui/label";
 import { providers } from "@/const/providres";
 
 export function SettingsTabs() {
+  const keys = useKeysStore((state) => state.keys);
   const addKey = useKeysStore((state) => state.addKey);
   return (
     <Tabs defaultValue="tab-1" className="flex-1">
@@ -39,18 +40,25 @@ export function SettingsTabs() {
         <TabsContent value="tab-1">
           <section className="space-y-2">
             <h2 className="text-2xl mb-5 font-semibold">Api keys</h2>
-            <div className="flex  gap-2">
+            <div className="flex mx-2 gap-2">
               {providers.map((provider) => (
-                <div key={provider.id} className="flex flex-col gap-2">
-                  <Label
-                    className="text-muted-foreground"
-                    htmlFor={provider.id}
-                  >
-                    {provider.name}
-                  </Label>
+                <div key={provider.id} className="flex flex-col  gap-2">
+                  <div className="flex items-center  gap-2">
+                    <Label
+                      className="text-muted-foreground"
+                      htmlFor={provider.id}
+                    >
+                      {provider.name}
+                    </Label>
+                    <a href={provider.link} target="_blank" rel="noreferrer">
+                      <ExternalLink className="size-4" />
+                    </a>
+                  </div>
+
                   <Input
                     id={provider.id}
                     type="password"
+                    value={keys[provider.id] ?? ""}
                     placeholder={`Enter ${provider.name} API key`}
                     onChange={(e) => addKey(e.target.value, provider.id)}
                   />
