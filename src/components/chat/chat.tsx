@@ -11,15 +11,35 @@ export function Chat() {
   const router = useRouter();
   const keys = useKeysStore((state) => state.keys);
   const selectedModel = useChatStore((state) => state.selectedModel);
+  const updateChat = useChatStore((state) => state.updateChat);
+  const addChat = useChatStore((state) => state.addChat);
+  const getChat = useChatStore((state) => state.getChat);
 
-  const { setInput, input, handleSubmit, messages, status, reload } = useChat({
-    onError: (error) => {
-      toast.error(error.message);
-    },
-    body: {
-      model: selectedModel,
-    },
-  });
+  const { setInput, input, handleSubmit, messages, status, reload, id } =
+    useChat({
+      onError: (error) => {
+        toast.error(error.message);
+      },
+      onFinish: (m, options) => {
+        const chat = getChat(id);
+        if (chat) {
+          updateChat(id, messages, options.usage.totalTokens);
+        } else {
+          addChat({
+            id,
+            name: m.content.split(" ", 3).join(" "),
+            messages: messages,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            totalTokens: options.usage.totalTokens,
+          });
+        }
+      },
+      body: {
+        model: selectedModel.id,
+        keys,
+      },
+    });
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {

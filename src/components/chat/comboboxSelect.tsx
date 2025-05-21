@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 import { Button } from "../ui/button";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, ShowerHead } from "lucide-react";
 import {
   Command,
   CommandEmpty,
@@ -16,11 +16,17 @@ import {
 } from "../ui/command";
 import { models } from "@/const/models";
 import { useState } from "react";
+import { useKeysStore } from "@/store/keys";
+import { getProviderForModel } from "@/lib/ai/map";
+import type { SupportedModel } from "@/types/provider";
+import { useChatStore } from "@/store/chat";
 
 export function ComboboxSelect() {
+  const keys = useKeysStore((state) => state.keys);
+  const changeModel = useChatStore((state) => state.changeModel);
+  const value = useChatStore((state) => state.selectedModel);
   const [open, setOpen] = useState(false);
-
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -29,15 +35,15 @@ export function ComboboxSelect() {
           // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="min-w-[150px] justify-between "
         >
-          {value
-            ? models.find((model) => model.id === value)?.name
+          {value.id
+            ? models.find((model) => model.id === value.id)?.name
             : "Select model..."}
           {open ? (
-            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          ) : (
             <ChevronUp className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          ) : (
+            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           )}
         </Button>
       </PopoverTrigger>
@@ -47,19 +53,29 @@ export function ComboboxSelect() {
           <CommandList className="scroll">
             <CommandEmpty>No model found.</CommandEmpty>
             <CommandGroup>
-              {models.map((model) => (
-                <CommandItem
-                  key={model.id}
-                  value={model.id}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  {value === model.id && <Check className="mr-2 h-4 w-4" />}
-                  {model.name}
-                </CommandItem>
-              ))}
+              {models
+                .filter((model) => {
+                  const provider = getProviderForModel(
+                    model.id as SupportedModel,
+                    false
+                  );
+                  return keys[provider] !== "";
+                })
+                .map((model) => (
+                  <CommandItem
+                    key={model.id}
+                    value={model.id}
+                    onSelect={(currentValue) => {
+                      changeModel(currentValue, value?.provider || "openai");
+                      setOpen(false);
+                    }}
+                  >
+                    {model.name}
+                    {value.id === model.id && (
+                      <Check className="mr-2 h-4 w-4" />
+                    )}
+                  </CommandItem>
+                ))}
             </CommandGroup>
           </CommandList>
         </Command>
