@@ -5,16 +5,18 @@ import { useRef } from "react";
 import { PulseDotLoader } from "../ui/loader";
 import { ChatContainer } from "../ui/chat-container";
 import { ScrollButton } from "../ui/scroll-button";
+import { MessageError } from "./messageError";
 
 type MessagesProps = {
   messages: MessageType[];
   onDelete?: (id: string) => void;
   onEdit?: (id: string, newText: string) => void;
   onReload: () => void;
+  error?: Error;
   status: "streaming" | "ready" | "submitted" | "error";
 };
 
-export function Messages({ messages, onReload, status }: MessagesProps) {
+export function Messages({ messages, onReload, status, error }: MessagesProps) {
   const initialMessageCount = useRef(messages.length);
   const containerRef = useRef<HTMLDivElement>(null);
   // if (!messages || messages.length === 0)
@@ -39,8 +41,7 @@ export function Messages({ messages, onReload, status }: MessagesProps) {
         )}
 
         {messages.map((message, index) => {
-          const isLast =
-            index === messages.length - 1 && status !== "submitted";
+          const isLast = index === messages.length - 1;
           const hasScrollAnchor =
             isLast && messages.length > initialMessageCount.current;
           return (
@@ -49,13 +50,13 @@ export function Messages({ messages, onReload, status }: MessagesProps) {
               key={message.id}
               attachments={message.experimental_attachments}
               isLast={isLast}
+              hasScrollAnchor={hasScrollAnchor}
+              role={message.role}
+              status={status}
+              parts={message.parts}
               onDelete={() => {}}
               onEdit={() => {}}
               onReload={onReload}
-              hasScrollAnchor={hasScrollAnchor}
-              parts={message.parts}
-              status={status}
-              role={message.role}
             >
               {message.content}
             </Message>
@@ -69,6 +70,7 @@ export function Messages({ messages, onReload, status }: MessagesProps) {
               <PulseDotLoader />
             </div>
           )}
+        {error && <MessageError error={error} />}
       </ChatContainer>
       <div className="absolute  bottom-0 w-full max-w-3xl">
         <ScrollButton

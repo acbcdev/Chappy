@@ -10,7 +10,7 @@ type MessageProps = {
   isLast?: boolean;
   onDelete: (id: string) => void;
   onEdit: (id: string, newText: string) => void;
-  onReload: () => void;
+  onReload: VoidFunction;
   hasScrollAnchor?: boolean;
   parts?: MessageType["parts"];
   status?: "streaming" | "ready" | "submitted" | "error";
@@ -22,12 +22,12 @@ export function Message({
   id,
   attachments,
   isLast,
-  onDelete,
-  onEdit,
-  onReload,
   hasScrollAnchor,
   parts,
   status,
+  onDelete,
+  onEdit,
+  onReload,
 }: MessageProps) {
   if (role === "user") {
     return (
