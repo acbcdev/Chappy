@@ -1,4 +1,12 @@
+import {
+	Anthropic,
+	Gemini,
+	MistralAI,
+	OpenAI,
+	xAIGrok,
+} from "@/components/icons";
 import type { providerType } from "@/types/provider";
+import type { SVGProps } from "react";
 
 // | "togther";
 type modelType = {
@@ -8,10 +16,15 @@ type modelType = {
 
 export const providers: Record<
 	providerType,
-	{ models: modelType[]; active: boolean }
+	{
+		models: modelType[];
+		active: boolean;
+		Icon: React.FC<SVGProps<SVGSVGElement>>;
+	}
 > = {
 	openai: {
 		active: true,
+		Icon: OpenAI,
 		models: [
 			{ id: "o1", name: "o1" },
 			{ id: "o1-mini", name: "o1 mini" },
@@ -32,6 +45,7 @@ export const providers: Record<
 	},
 	google: {
 		active: true,
+		Icon: Gemini,
 		models: [
 			{ id: "gemini-2.0-flash", name: "Gemini 2.0 Flash" },
 			{ id: "gemini-2.0-flash-lite", name: "Gemini 2.0 Flash Lite" },
@@ -49,16 +63,17 @@ export const providers: Record<
 				id: "gemini-2.5-flash-preview-04-17",
 				name: "Gemini 2.5 Flash Preview 04-17",
 			},
-			{ id: "gemini-exp-1206", name: "Gemini Exp 1206" },
-			{ id: "gemma-3-27b-it", name: "Gemma 3.27b IT" },
-			{
-				id: "learnlm-1.5-pro-experimental",
-				name: "LearnLM 1.5 Pro Experimental",
-			},
+			// { id: "gemini-exp-1206", name: "Gemini Exp 1206" },
+			// { id: "gemma-3-27b-it", name: "Gemma 3.27b IT" },
+			// {
+			// 	id: "learnlm-1.5-pro-experimental",
+			// 	name: "LearnLM 1.5 Pro Experimental",
+			// },
 		],
 	},
 	anthropic: {
 		active: false,
+		Icon: Anthropic,
 		models: [
 			{ id: "claude-3-7-sonnet-20250219", name: "Claude 3.7 Sonnet 20250219" },
 			{ id: "claude-3-5-sonnet-latest", name: "Claude 3.5 Sonnet Latest" },
@@ -74,6 +89,7 @@ export const providers: Record<
 	},
 	mistral: {
 		active: false,
+		Icon: MistralAI,
 		models: [
 			{ id: "ministral-3b-latest", name: "Ministral 3B Latest" },
 			{ id: "ministral-8b-latest", name: "Ministral 8B Latest" },
@@ -87,6 +103,7 @@ export const providers: Record<
 		],
 	},
 	xai: {
+		Icon: xAIGrok,
 		active: false,
 		models: [],
 	},
@@ -98,6 +115,7 @@ export const models = Object.entries(providers)
 			provider,
 			...model,
 			active: value.active,
+			Icon: value.Icon,
 		})),
 	)
 	.filter((models) => models.active);
