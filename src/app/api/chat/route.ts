@@ -19,15 +19,10 @@ export async function POST(req: Request) {
 		if (!model.id || !model.provider || !keys[model.provider]) {
 			throw new Error("Model or key is missing");
 		}
+		const modelId = model.id as SupportedModel;
+		const key = keys[model.provider];
 		const result = streamText({
-			model: ai(
-				(model.id as SupportedModel) ||
-					("gemini-2.0-flash-lite" as SupportedModel),
-				{
-					key: keys[model.provider],
-				},
-			),
-
+			model: ai(modelId, { key }),
 			messages,
 			system: "You are a helpful assistant.",
 		});

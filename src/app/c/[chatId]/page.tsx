@@ -6,6 +6,5 @@ export default async function Page({
   params: Promise<{ chatId: string }>;
 }) {
   const { chatId } = await params;
-
   return <Chat chatId={chatId} />;
 }
