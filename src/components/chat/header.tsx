@@ -22,7 +22,7 @@ export function Header() {
         {pathname !== "/" && (
           <Tooltip delayDuration={400}>
             <TooltipTrigger asChild>
-              <Link href="/">
+              <Link href="/?new=true">
                 <Button variant="ghost" size={"icon"}>
                   <Plus />
                 </Button>

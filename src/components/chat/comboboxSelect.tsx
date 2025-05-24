@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 import { Button } from "../ui/button";
-import { Check, ChevronDown, ChevronUp, ShowerHead } from "lucide-react";
+import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import {
   Command,
   CommandEmpty,
@@ -26,7 +26,6 @@ export function ComboboxSelect() {
   const changeModel = useChatStore((state) => state.changeModel);
   const value = useChatStore((state) => state.selectedModel);
   const [open, setOpen] = useState(false);
-  // const [value, setValue] = useState("");
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -75,6 +74,7 @@ export function ComboboxSelect() {
                       setOpen(false);
                     }}
                   >
+                    <model.Icon />
                     {model.name}
                     {value.id === model.id && (
                       <Check className="mr-2 h-4 w-4" />

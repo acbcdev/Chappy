@@ -5,20 +5,33 @@ import { Prompt } from "./prompt";
 import { toast } from "sonner";
 import { useKeysStore } from "@/store/keys";
 import { useChatStore } from "@/store/chat";
-import { use, useEffect } from "react";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { nanoid } from "nanoid";
+import { useDebounce } from "@/hooks/useDebounce";
+type ChatProps = {
+  chatId?: string;
+};
 
-export function Chat({ chatId }: { chatId?: string }) {
+export function Chat({ chatId }: ChatProps) {
+  const [chatIdState, setChatIdState] = useState<string | undefined>(chatId);
   const router = useRouter();
-  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const keys = useKeysStore((state) => state.keys);
   const selectedModel = useChatStore((state) => state.selectedModel);
   const updateChat = useChatStore((state) => state.updateChat);
   const addChat = useChatStore((state) => state.addChat);
   const getChat = useChatStore((state) => state.getChat);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  const newChat = useMemo(
+    () => searchParams.get("new"),
+    [searchParams, chatIdState]
+  );
 
-  const currentChat = chatId ? getChat(chatId) : null;
+  const currentChat = useMemo(
+    () => (chatIdState ? getChat(chatIdState) : null),
+    [chatIdState, getChat]
+  );
   if (currentChat === undefined) {
     return redirect("/");
   }
@@ -29,68 +42,102 @@ export function Chat({ chatId }: { chatId?: string }) {
     messages,
     status,
     reload,
-    id,
+    error,
+    stop,
     setMessages,
   } = useChat({
+    id: chatIdState,
     initialMessages: currentChat?.messages ?? [],
     onError: (error) => {
       toast.error(error.message);
+      setMessages((prev) => prev.slice(0, -1));
     },
-    onFinish: (m, options) => {
-      const i = chatId ?? id;
-      const chat = getChat(id);
-      if (chat) {
-        updateChat(i, messages, options.usage.totalTokens);
-      }
+    onFinish: (_, options) => {
+      if (chatId)
+        updateChat(chatId, { totalTokens: options.usage.totalTokens });
     },
     body: {
       model: selectedModel,
       keys,
     },
   });
+  const messagesDebounced = useDebounce(messages, 1000);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (currentChat) {
-      setMessages(currentChat.messages);
-      setInput("");
-    } else {
+    if (newChat) {
+      window.history.replaceState(null, "", "/");
       setMessages([]);
+      setChatIdState(undefined);
     }
-  }, [pathname, chatId]);
+  }, []);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const isEveryKeyEmpty = Object.values(keys).every((key) => {
-      console.log("key", key);
-      return key.trim() === "";
-    });
+    if (chatIdState) updateChat(chatIdState, { messages });
+  }, [messagesDebounced]);
+
+  useEffect(() => {
+    const isEveryKeyEmpty = Object.values(keys).every(
+      (key) => key.trim() === ""
+    );
     if (isEveryKeyEmpty) {
       router.push("/?modalOpen=true");
+      return;
     }
-    if (!chatId || !currentChat) {
+    // Solo redirige si no hay chatId y no hay chat actual
+    if (!chatIdState && !currentChat) {
       router.push("");
     }
-  }, [keys]);
+  }, [keys, chatIdState, currentChat, router]);
+
+  // Detecta input inicial desde query param solo si es un chat nuevo
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (chatIdState && messages.length === 0) {
+      const initialInput = searchParams.get("input");
+      if (initialInput) {
+        setInput(initialInput);
+        // Ejecuta el submit solo una vez
+        handleSubmit();
+        router.replace(`/c/${chatIdState}`);
+        // Opcional: limpia el query param después de usarlo (requiere router.replace)
+        // router.replace(`/c/${chatId}`);
+      }
+    }
+  }, [chatIdState, messages.length, searchParams, setInput, handleSubmit]);
+
   const submit = () => {
-    if (messages.length === 0) {
-      const id = nanoid();
+    // Si no hay chat actual, crea uno nuevo y navega
+    if (!currentChat) {
+      const newId = nanoid();
       addChat({
-        id,
-        name: input.split(" ", 3).join(" "),
-        messages: messages,
+        id: newId,
+        name: input.split(" ", 20).join(" "),
+        messages: [],
         createdAt: Date.now(),
         updatedAt: Date.now(),
         totalTokens: 0,
       });
-      router.push(`/c/${id}`);
-    }
+      // toast("Creating new chat...");
 
+      window.history.pushState(null, "", `/c/${newId}`);
+      setChatIdState(newId);
+      // No llamar a handleSubmit aquí, el componente se reinicializa con el nuevo chatId
+      // return;
+    }
+    // Si ya existe el chat, solo envía el mensaje
     handleSubmit();
   };
+
   return (
     <section className="@container/main relative flex  h-screen flex-col">
-      <Messages messages={messages} onReload={reload} status={status} />
+      <Messages
+        messages={messages}
+        onReload={reload}
+        status={status}
+        error={error}
+      />
       <div className="sticky bottom-0 left-0 right-0 bg-background/80 backdrop-blur-md pt-2">
         <form
           id="chat-form"
