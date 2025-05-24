@@ -16,11 +16,7 @@ export interface chatStore {
 	chats: Chat[];
 	addChat: (chat: Chat) => void;
 	removeChat: (id: string) => void;
-	updateChat: (
-		id: string,
-		updatedChat: Chat["messages"],
-		tokens: number,
-	) => void;
+	updateChat: (id: Chat["id"], newChat: Partial<Chat>) => void;
 
 	getChat: (id: string) => Chat | undefined;
 
@@ -59,20 +55,24 @@ export const useChatStore = create<chatStore>()(
 				set((state) => ({
 					chats: state.chats.filter((chat) => chat.id !== id),
 				})),
-			updateChat: (id, newMessages, newTokens) =>
+			updateChat: (id, newChat) =>
 				set((state) => {
 					const chatIndex = state.chats.findIndex((chat) => chat.id === id);
 					if (chatIndex === -1) {
 						return {};
 					}
 					const chat = state.chats[chatIndex];
-					const updateChat: Chat = {
+					let chatTokens = chat.totalTokens;
+					if (newChat.totalTokens) {
+						chatTokens += newChat.totalTokens;
+					}
+					const updatedChat: Chat = {
 						...chat,
-						messages: newMessages,
+						...newChat,
 						updatedAt: Date.now(),
-						totalTokens: newTokens + chat.totalTokens,
+						totalTokens: chatTokens,
 					};
-					const updatedChats = state.chats.with(chatIndex, updateChat);
+					const updatedChats = state.chats.with(chatIndex, updatedChat);
 					return { chats: updatedChats };
 				}),
 
