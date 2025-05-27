@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/chat/sidebar";
-import { Header } from "@/components/chat/header";
+import { AppSidebar } from "@/components/layout/sidebar";
+import { Header } from "@/components/layout/header";
 import { Providers } from "@/components/providers";
 
 const geistSans = Geist({
@@ -33,9 +33,9 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
+          <Header />
           <AppSidebar />
           <SidebarInset>
-            <Header />
             <div className="bg-background flex h-dvh w-full overflow-hidden">
               <main className="@container relative h-dvh w-0 flex-shrink flex-grow overflow-y-auto">
                 {children}
