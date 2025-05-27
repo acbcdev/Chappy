@@ -20,7 +20,7 @@ export function DialogDemo() {
     <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size={"icon"}>
-          <Cog />
+          <Cog className="size-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] min-w-4xl">
