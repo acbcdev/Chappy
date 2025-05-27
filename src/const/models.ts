@@ -40,7 +40,6 @@ export const providers: Record<
 			{ id: "gpt-4o-mini-search-preview", name: "gpt 4o mini search Preview" },
 			{ id: "gpt-4o-mini", name: "gpt 4o mini" },
 			{ id: "gpt-4.5-preview", name: "gpt 4.5 Preview" },
-			{ id: "chatgpt-4o-latest", name: "chatgpt 4o latest" },
 		],
 	},
 	google: {
@@ -51,17 +50,17 @@ export const providers: Record<
 			{ id: "gemini-2.0-flash-lite", name: "Gemini 2.0 Flash Lite" },
 			{
 				id: "gemini-2.0-flash-thinking-exp-01-21",
-				name: "Gemini 2.0 Flash Thinking Exp 01-21",
+				name: "Gemini 2.0 Flash Thinking Exp ",
 			},
 			{ id: "gemini-2.0-flash-exp", name: "Gemini 2.0 Flash Exp" },
-			{ id: "gemini-2.5-pro-exp-03-25", name: "Gemini 2.5 Pro Exp 03-25" },
+			{ id: "gemini-2.5-pro-exp-03-25", name: "Gemini 2.5 Pro Exp " },
 			{
 				id: "gemini-2.5-pro-preview-05-06",
-				name: "Gemini 2.5 Pro Preview 05-06",
+				name: "Gemini 2.5 Pro Preview ",
 			},
 			{
 				id: "gemini-2.5-flash-preview-04-17",
-				name: "Gemini 2.5 Flash Preview 04-17",
+				name: "Gemini 2.5 Flash Preview",
 			},
 			// { id: "gemini-exp-1206", name: "Gemini Exp 1206" },
 			// { id: "gemma-3-27b-it", name: "Gemma 3.27b IT" },

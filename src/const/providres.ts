@@ -17,4 +17,14 @@ export const providers: ProviderT[] = [
 		id: "google",
 		link: "https://aistudio.google.com/apikey",
 	},
+	{
+		name: "Anthropic",
+		id: "anthropic",
+		link: "https://console.anthropic.com/settings/keys",
+	},
+	{
+		name: "Mistral",
+		id: "mistral",
+		link: "https://console.mistral.ai/api-keys",
+	},
 ];
