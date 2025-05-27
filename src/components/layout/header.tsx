@@ -1,11 +1,5 @@
 "use client";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+
 import { Button } from "../ui/button";
 import { SidebarTrigger } from "../ui/sidebar";
 import { CirclePlus } from "lucide-react";
@@ -36,19 +30,7 @@ export function Header() {
             <TooltipContent>new chat</TooltipContent>
           </Tooltip>
         )}
-        <SignedOut>
-          <DialogDemo />
-          <SignInButton mode="modal">
-            <Button>Sign in</Button>
-          </SignInButton>
-          <SignUpButton mode="modal">
-            <Button variant="secondary">Sign up</Button>
-          </SignUpButton>
-        </SignedOut>
-        <SignedIn>
-          <DialogDemo />
-          <UserButton />
-        </SignedIn>
+        <DialogDemo />
       </div>
     </header>
   );
