@@ -20,26 +20,25 @@ type SidebarItemProps = {
 
 export function SidebarItem({ chat, chatId }: SidebarItemProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState("");
 
   const router = useRouter();
   const deleteChat = useChatStore((state) => state.removeChat);
   const updateChat = useChatStore((state) => state.updateChat);
-  const handleRename = () => {
+  const handleRename = (newName: string) => {
     if (newName.trim() === "") return; // Prevent empty names
     updateChat(chat.id, { name: newName });
     setIsEditing(false);
   };
   const handleCancel = () => {
     setIsEditing(false);
-    setNewName(chat.name); // Reset to original name
   };
 
   return (
-    <SidebarMenuItem
+    <Link
       key={chat.id}
-      className={`flex items-center hover:bg-muted duration-200 rounded-md ${
-        isEditing ? "" : "pl-2"
+      href={`/c/${chat.id}`}
+      className={`flex items-center justify-between hover:bg-muted duration-200 py-1.5 rounded-md ${
+        isEditing ? "" : "px-2"
       } ${chatId === chat.id ? "bg-muted/90" : ""}`}
     >
       {isEditing ? (
@@ -47,7 +46,7 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
           <Input
             onBlur={handleCancel}
             onKeyDown={(e) => {
-              if (e.key === "Enter") handleRename();
+              if (e.key === "Enter") handleRename(e.currentTarget.value);
               else if (e.key === "Escape") handleCancel();
             }}
             defaultValue={chat.name}
@@ -56,30 +55,13 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
             className="w-full rounded-md bg-transparent px-2 py-1 text-sm text-muted-foreground"
             placeholder="Chat name"
           />
-          <div className="absolute flex right-2 gap-x-1 justify-center items-center inset-y-0">
-            <Check
-              onClick={handleRename}
-              aria-label="Save"
-              className="size-5 hover:text-green-500 duration-200"
-            />
-            <X
-              onClick={handleCancel}
-              aria-label="Cancel"
-              className="size-5 hover:text-destructive duration-200"
-            />
-          </div>
         </div>
       ) : (
         <>
-          <Link
-            href={`/c/${chat.id}`}
-            className="flex-1 flex items-center h-full cursor-pointer truncate line-clamp-1 "
-          >
-            {chat.name}
-          </Link>
+          <p className=" cursor-pointer truncate">{chat.name}</p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="icon" variant="ghost">
+              <Button size="iconSm" variant="ghost" className="rounded-full s">
                 <Ellipsis />
               </Button>
             </DropdownMenuTrigger>
@@ -107,6 +89,6 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
           </DropdownMenu>
         </>
       )}
-    </SidebarMenuItem>
+    </Link>
   );
 }
