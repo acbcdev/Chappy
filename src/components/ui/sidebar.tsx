@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
-import { PanelLeftIcon } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/utils";
@@ -260,7 +260,7 @@ function SidebarTrigger({
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, open } = useSidebar();
 
   return (
     <Button
@@ -274,7 +274,12 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon className={className} />
+      {open ? (
+        <PanelLeftClose className={cn(["size-5", className])} />
+      ) : (
+        <PanelLeftOpen className={cn(["size-5", className])} />
+      )}
+      {/* <PanelLeftIcon className={className} /> */}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
