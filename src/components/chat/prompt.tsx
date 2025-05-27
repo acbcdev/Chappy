@@ -15,9 +15,16 @@ type PropsPropmpt = {
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
   status: "submitted" | "streaming" | "ready" | "error";
-  onSend: () => void;
+  onSend: VoidFunction;
+  onStop: VoidFunction;
 };
-export function Prompt({ input, setInput, status, onSend }: PropsPropmpt) {
+export function Prompt({
+  input,
+  setInput,
+  status,
+  onSend,
+  onStop,
+}: PropsPropmpt) {
   const isLoading = status === "streaming";
 
   const handleKeyDown = useCallback(
@@ -45,7 +52,7 @@ export function Prompt({ input, setInput, status, onSend }: PropsPropmpt) {
       value={input}
       onValueChange={setInput}
       isLoading={isLoading}
-      className="w-full max-w-(--breakpoint-md)"
+      className="w-full max-w-(--breakpoint-md) bg-muted/70 border-none"
     >
       <PromptInputTextarea
         form="chat-form"
@@ -65,12 +72,12 @@ export function Prompt({ input, setInput, status, onSend }: PropsPropmpt) {
           <Button
             variant="default"
             size="icon"
-            disabled={isLoading}
             className="h-8 w-8 rounded-full"
-            type="submit"
+            type={isLoading ? "button" : "submit"}
+            onClick={isLoading ? onStop : () => {}}
           >
             {isLoading ? (
-              <CircleStop className="size-5 fill-current" />
+              <CircleStop className="size-5" />
             ) : (
               <ArrowUp className="size-5" />
             )}

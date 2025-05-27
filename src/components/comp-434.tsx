@@ -1,11 +1,12 @@
 import { Brain, ExternalLink, Paintbrush } from "lucide-react";
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useKeysStore } from "@/store/keys";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { providers } from "@/const/providres";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export function SettingsTabs() {
   const keys = useKeysStore((state) => state.keys);
@@ -43,16 +44,28 @@ export function SettingsTabs() {
             <div className="flex mx-2 gap-2">
               {providers.map((provider) => (
                 <div key={provider.id} className="flex flex-col  gap-2">
-                  <div className="flex items-center  gap-2">
+                  <div className="flex items-end gap-2">
                     <Label
                       className="text-muted-foreground"
                       htmlFor={provider.id}
                     >
                       {provider.name}
                     </Label>
-                    <a href={provider.link} target="_blank" rel="noreferrer">
-                      <ExternalLink className="size-4" />
-                    </a>
+                    <Tooltip delayDuration={50}>
+                      <TooltipTrigger>
+                        <a
+                          href={provider.link}
+                          target="_blank"
+                          aria-label={`Get your ${provider.name} API key`}
+                          rel="noreferrer"
+                        >
+                          <ExternalLink className="size-4" />
+                        </a>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Get {provider.name} API key
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
 
                   <Input

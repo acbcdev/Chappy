@@ -26,6 +26,8 @@ export function ComboboxSelect() {
   const changeModel = useChatStore((state) => state.changeModel);
   const value = useChatStore((state) => state.selectedModel);
   const [open, setOpen] = useState(false);
+
+  const currentModel = models.find((model) => model.id === value.id);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -36,9 +38,9 @@ export function ComboboxSelect() {
           aria-expanded={open}
           className="min-w-[150px] justify-between "
         >
-          {value.id
-            ? models.find((model) => model.id === value.id)?.name
-            : "Select model..."}
+          {currentModel?.Icon && <currentModel.Icon className=" h-4 w-4" />}
+          {/* {value?.id || "Select model..."} */}
+          {value.id ? currentModel?.name : "Select a model..."}
           {open ? (
             <ChevronUp className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           ) : (
@@ -70,7 +72,11 @@ export function ComboboxSelect() {
                         currentValue,
                         model.provider
                       );
-                      changeModel(currentValue, model.provider as providerType);
+                      changeModel({
+                        id: currentValue,
+                        provider: model.provider as providerType,
+                        Icon: model.Icon,
+                      });
                       setOpen(false);
                     }}
                   >

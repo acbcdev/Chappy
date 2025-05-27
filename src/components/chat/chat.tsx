@@ -2,7 +2,6 @@
 import { useChat } from "@ai-sdk/react";
 import { Messages } from "../messages/messages";
 import { Prompt } from "./prompt";
-import { toast } from "sonner";
 import { useKeysStore } from "@/store/keys";
 import { useChatStore } from "@/store/chat";
 import { useEffect, useMemo, useState } from "react";
@@ -22,9 +21,11 @@ export function Chat({ chatId }: ChatProps) {
   const updateChat = useChatStore((state) => state.updateChat);
   const addChat = useChatStore((state) => state.addChat);
   const getChat = useChatStore((state) => state.getChat);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const newChat = useMemo(
     () => searchParams.get("new"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [searchParams, chatIdState]
   );
 
@@ -32,9 +33,7 @@ export function Chat({ chatId }: ChatProps) {
     () => (chatIdState ? getChat(chatIdState) : null),
     [chatIdState, getChat]
   );
-  if (currentChat === undefined) {
-    return redirect("/");
-  }
+
   const {
     setInput,
     input,
@@ -48,10 +47,10 @@ export function Chat({ chatId }: ChatProps) {
   } = useChat({
     id: chatIdState,
     initialMessages: currentChat?.messages ?? [],
-    onError: (error) => {
-      toast.error(error.message);
-      setMessages((prev) => prev.slice(0, -1));
-    },
+    // onError: (error) => {
+    // toast.error(error.message);
+    // setMessages((prev) => prev.slice(0, -1));
+    // },
     onFinish: (_, options) => {
       if (chatId)
         updateChat(chatId, { totalTokens: options.usage.totalTokens });
@@ -70,7 +69,7 @@ export function Chat({ chatId }: ChatProps) {
       setMessages([]);
       setChatIdState(undefined);
     }
-  }, []);
+  }, [newChat]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -107,6 +106,9 @@ export function Chat({ chatId }: ChatProps) {
     }
   }, [chatIdState, messages.length, searchParams, setInput, handleSubmit]);
 
+  if (currentChat === undefined) {
+    return redirect("/");
+  }
   const submit = () => {
     // Si no hay chat actual, crea uno nuevo y navega
     if (!currentChat) {
@@ -142,13 +144,14 @@ export function Chat({ chatId }: ChatProps) {
         <form
           id="chat-form"
           className="relative inset-x-0 mx-auto w-full max-w-3xl px-4 pb-4"
-          onSubmit={handleSubmit}
+          onSubmit={submit}
         >
           <Prompt
             setInput={setInput}
             input={input}
             status={status}
             onSend={submit}
+            onStop={stop}
           />
         </form>
       </div>
