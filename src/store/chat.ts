@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { providerType } from "@/types/provider";
 
-type Chat = {
+export type Chat = {
 	id: string;
 	name: string;
 	messages: MessageType[];
@@ -23,17 +23,11 @@ export interface chatStore {
 	selectedModel: {
 		id: string | null;
 		provider: providerType | null;
+		Icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 	};
 
-	changeModel: (modelId: string, provider: providerType) => void;
+	changeModel: ({ id, provider, Icon }: chatStore["selectedModel"]) => void;
 }
-// const DEFAULT_CHAT: Chat = {
-// 	id: "1",
-// 	name: "Chat 1",
-// 	messages: [],
-// 	createdAt: Date.now(),
-// 	updatedAt: Date.now(),
-// };
 
 export const useChatStore = create<chatStore>()(
 	persist(
@@ -42,12 +36,14 @@ export const useChatStore = create<chatStore>()(
 			selectedModel: {
 				id: "",
 				provider: null,
+				Icon: undefined,
 			},
-			changeModel: (modelId, provider) =>
+			changeModel: ({ id, provider, Icon }) =>
 				set(() => ({
 					selectedModel: {
-						id: modelId,
+						id,
 						provider,
+						Icon,
 					},
 				})),
 			addChat: (chat) => set((state) => ({ chats: [chat, ...state.chats] })),
@@ -79,7 +75,11 @@ export const useChatStore = create<chatStore>()(
 			getChat: (id) => get().chats.find((chat) => chat.id === id),
 		}),
 		{
-			name: "chat-storage", // unique name
+			name: "chat-storage",
+			partialize: (state) => ({
+				chats: state.chats,
+				selectedModel: state.selectedModel,
+			}),
 		},
 	),
 );
