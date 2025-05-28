@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { SidebarMenuItem } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Check, Ellipsis, Pencil, Pin, Trash, X } from "lucide-react";
+import { Ellipsis, Pencil, Pin, Trash } from "lucide-react";
 import { useChatStore, type Chat } from "@/store/chat";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -34,9 +33,8 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
   };
 
   return (
-    <Link
+    <div
       key={chat.id}
-      href={`/c/${chat.id}`}
       className={`flex items-center justify-between hover:bg-border duration-200  rounded-md ${
         isEditing ? "" : "px-2"
       } ${chatId === chat.id ? "bg-border " : ""}`}
@@ -52,11 +50,14 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
           autoFocus
           type="text"
           className="w-full rounded-md bg-transparent z-10 px-2 py-1 text-sm text-muted-foreground"
-          placeholder="Chat name"
         />
       ) : (
         <>
-          <p className="cursor-pointer truncate py-1.5">{chat.name}</p>
+          <Link href={`/c/${chat.id}`} className="flex-1 truncate">
+            <p title={chat.name} className="cursor-pointer truncate py-1.5">
+              {chat.name}
+            </p>
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -98,6 +99,6 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
           </DropdownMenu>
         </>
       )}
-    </Link>
+    </div>
   );
 }
