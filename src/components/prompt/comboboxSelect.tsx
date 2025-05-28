@@ -26,7 +26,6 @@ import { useKeysStore } from "@/store/keys";
 import { getProviderForModel } from "@/lib/ai/map";
 import type { providerType, SupportedModel } from "@/types/provider";
 import { useChatStore } from "@/store/chat";
-import { Separator } from "../ui/separator";
 
 export function ComboboxSelect() {
   const keys = useKeysStore((state) => state.keys);
@@ -38,7 +37,8 @@ export function ComboboxSelect() {
 
   const activeModels = models.filter((model) => {
     const provider = getProviderForModel(model.id as SupportedModel, false);
-    return keys[provider] !== "";
+    console.log(provider);
+    return keys[provider]?.length > 8;
   });
   return (
     <Popover open={open} onOpenChange={setOpen}>

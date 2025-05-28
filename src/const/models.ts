@@ -62,16 +62,10 @@ export const providers: Record<
 				id: "gemini-2.5-flash-preview-04-17",
 				name: "Gemini 2.5 Flash Preview",
 			},
-			// { id: "gemini-exp-1206", name: "Gemini Exp 1206" },
-			// { id: "gemma-3-27b-it", name: "Gemma 3.27b IT" },
-			// {
-			// 	id: "learnlm-1.5-pro-experimental",
-			// 	name: "LearnLM 1.5 Pro Experimental",
-			// },
 		],
 	},
 	anthropic: {
-		active: false,
+		active: true,
 		Icon: Anthropic,
 		models: [
 			{ id: "claude-3-7-sonnet-20250219", name: "Claude 3.7 Sonnet 20250219" },
@@ -83,7 +77,7 @@ export const providers: Record<
 		],
 	},
 	mistral: {
-		active: false,
+		active: true,
 		Icon: MistralAI,
 		models: [
 			{ id: "ministral-3b-latest", name: "Ministral 3B Latest" },
