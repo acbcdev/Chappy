@@ -39,7 +39,6 @@ export function Suggestions({ setInput }: SuggestionsProps) {
           {activeCategoryData?.items.map((suggestion) => (
             <PromptSuggestion
               key={suggestion}
-              variant="ghost"
               size={"lg"}
               highlight={activeCategoryData.highlight}
               onClick={() => {

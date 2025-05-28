@@ -4,7 +4,7 @@ import { Message, MessageContent } from "../ui/message";
 import { cn } from "@/lib/utils";
 import { Reasoning } from "./reasoning";
 import { MessageActionsItem } from "./messageItemActions";
-import { SourcesList } from "./SourcesList";
+import { SourcesList } from "./sourcesList";
 
 type MessageAssistantProps = {
   children: string;
