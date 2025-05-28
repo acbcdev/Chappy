@@ -10,6 +10,7 @@ export type Chat = {
 	createdAt: number;
 	updatedAt: number;
 	totalTokens: number;
+	pinned: boolean;
 };
 
 export interface chatStore {
