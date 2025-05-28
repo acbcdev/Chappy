@@ -6,7 +6,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -80,7 +79,7 @@
   --sidebar-accent-foreground: oklch(1.00 0 0);
   --sidebar-border: oklch(0.93 0.01 264.53);
   --sidebar-ring: oklch(0.58 0.13 289.62);
-  --radius: 1rem;
+  --radius: 0.7rem;
 }
 
 .dark {
@@ -108,7 +107,7 @@
   --chart-3: oklch(0.51 0.16 283.21);
   --chart-4: oklch(0.41 0.08 294.40);
   --chart-5: oklch(0.35 0.09 291.73);
-  --sidebar: oklch(0.20 0 0);
+  --sidebar: oklch(0.27 0 0);
   --sidebar-foreground: oklch(0.92 0 0);
   --sidebar-primary: oklch(0.51 0.16 283.21);
   --sidebar-primary-foreground: oklch(1.00 0 0);
