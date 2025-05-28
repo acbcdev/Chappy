@@ -59,7 +59,7 @@ function PromptSuggestion({
 
   return (
     <Button
-      variant={variant || "ghost"}
+      variant={variant || "ghostSecondary"}
       size={size || "sm"}
       className={cn(
         "w-full cursor-pointer justify-start gap-0 rounded-xl py-2 ",
