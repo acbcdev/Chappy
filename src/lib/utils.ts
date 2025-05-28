@@ -16,7 +16,7 @@ const DAY = 24 * HOUR;
 const WEEK = 7 * DAY;
 const MONTH = 30 * DAY;
 // const YEAR = 365 * DAY;
-export function groupChatsByDate(
+export function groupChats(
 	chat: Chat[],
 	searchQuery?: string,
 ): TimeGroup[] | null {
@@ -32,6 +32,7 @@ export function groupChatsByDate(
 	const monthAgo = today - MONTH;
 	const yearStart = new Date(now.getFullYear(), 0, 1).getTime();
 
+	const pins: Chat[] = chat.filter((c) => c.pinned);
 	const todayChats: Chat[] = [];
 	const yesterdayChats: Chat[] = [];
 	const last7DaysChats: Chat[] = [];
@@ -39,7 +40,7 @@ export function groupChatsByDate(
 	const thisYearChats: Chat[] = [];
 	const olderChats: Record<number, Chat[]> = {};
 
-	for (const c of chat) {
+	for (const c of chat.filter((c) => !c.pinned)) {
 		const chatTime = new Date(c.createdAt).getTime();
 		if (chatTime >= today) {
 			todayChats.push(c);
@@ -61,6 +62,9 @@ export function groupChatsByDate(
 	}
 	const results: TimeGroup[] = [];
 
+	if (pins.length > 0) {
+		results.push({ name: "Pinned", chats: pins });
+	}
 	if (todayChats.length > 0) {
 		results.push({ name: "Today", chats: todayChats });
 	}

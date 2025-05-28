@@ -22,12 +22,7 @@ export function Chat({ chatId }: ChatProps) {
   const addChat = useChatStore((state) => state.addChat);
   const getChat = useChatStore((state) => state.getChat);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  const newChat = useMemo(
-    () => searchParams.get("new"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [searchParams, chatIdState]
-  );
+  const newChat = useMemo(() => searchParams.get("new"), [searchParams]);
 
   const currentChat = useMemo(
     () => (chatIdState ? getChat(chatIdState) : null),
@@ -47,10 +42,7 @@ export function Chat({ chatId }: ChatProps) {
   } = useChat({
     id: chatIdState,
     initialMessages: currentChat?.messages ?? [],
-    // onError: (error) => {
-    // toast.error(error.message);
-    // setMessages((prev) => prev.slice(0, -1));
-    // },
+
     onFinish: (_, options) => {
       if (chatId)
         updateChat(chatId, { totalTokens: options.usage.totalTokens });
@@ -62,19 +54,18 @@ export function Chat({ chatId }: ChatProps) {
   });
   const messagesDebounced = useDebounce(messages, 1000);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (newChat) {
       window.history.replaceState(null, "", "/");
       setMessages([]);
       setChatIdState(undefined);
     }
-  }, [newChat]);
+  }, [newChat, setMessages]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (chatIdState) updateChat(chatIdState, { messages });
-  }, [messagesDebounced]);
+  }, [messagesDebounced, chatIdState]);
 
   useEffect(() => {
     const isEveryKeyEmpty = Object.values(keys).every(
@@ -91,7 +82,6 @@ export function Chat({ chatId }: ChatProps) {
   }, [keys, chatIdState, currentChat, router]);
 
   // Detecta input inicial desde query param solo si es un chat nuevo
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (chatIdState && messages.length === 0) {
       const initialInput = searchParams.get("input");
@@ -104,7 +94,14 @@ export function Chat({ chatId }: ChatProps) {
         // router.replace(`/c/${chatId}`);
       }
     }
-  }, [chatIdState, messages.length, searchParams, setInput, handleSubmit]);
+  }, [
+    chatIdState,
+    messages.length,
+    searchParams,
+    setInput,
+    handleSubmit,
+    router,
+  ]);
 
   if (currentChat === undefined) {
     return redirect("/");
@@ -120,6 +117,7 @@ export function Chat({ chatId }: ChatProps) {
         createdAt: Date.now(),
         updatedAt: Date.now(),
         totalTokens: 0,
+        pinned: false,
       });
       // toast("Creating new chat...");
 
@@ -135,6 +133,7 @@ export function Chat({ chatId }: ChatProps) {
   return (
     <section className="@container/main relative flex  h-screen flex-col">
       <Messages
+        setInput={setInput}
         messages={messages}
         onReload={reload}
         status={status}
