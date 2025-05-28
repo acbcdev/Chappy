@@ -80,10 +80,6 @@ export const providers: Record<
 			{ id: "claude-3-5-sonnet-20240620", name: "Claude 3.5 Sonnet 20240620" },
 			{ id: "claude-3-5-haiku-latest", name: "Claude 3.5 Haiku Latest" },
 			{ id: "claude-3-5-haiku-20241022", name: "Claude 3.5 Haiku 20241022" },
-			{ id: "claude-3-opus-latest", name: "Claude 3.0 Opus Latest" },
-			{ id: "claude-3-opus-20240229", name: "Claude 3.0 Opus 20240229" },
-			{ id: "claude-3-sonnet-20240229", name: "Claude 3.0 Sonnet 20240229" },
-			{ id: "claude-3-haiku-20240307", name: "Claude 3.0 Haiku 20240307" },
 		],
 	},
 	mistral: {
