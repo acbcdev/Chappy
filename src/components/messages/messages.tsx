@@ -39,7 +39,7 @@ export function Messages({
         }}
       >
         {messages.length === 0 && (
-          <div className="flex w-4xl px-8 max-w-(--breakpoint-md) justify-center flex-col h-1/2 ">
+          <div className="flex w-full md:w-2xl mx-auto px-8 md:max-w-(--breakpoint-md) justify-center flex-col h-1/2 ">
             <h1 className="mb-6 text-4xl font-medium tracking-tight">
               How may I help you?
             </h1>

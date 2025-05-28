@@ -1,7 +1,7 @@
 "use client";
 import { useChat } from "@ai-sdk/react";
-import { Messages } from "../messages/messages";
-import { Prompt } from "./prompt";
+import { Messages } from "@/components/messages/messages";
+import { Prompt } from "@/components/prompt/prompt";
 import { useKeysStore } from "@/store/keys";
 import { useChatStore } from "@/store/chat";
 import { useEffect, useMemo, useState } from "react";
