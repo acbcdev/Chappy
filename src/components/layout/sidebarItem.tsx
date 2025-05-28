@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Check, Ellipsis, Pencil, Trash, X } from "lucide-react";
+import { Check, Ellipsis, Pencil, Pin, Trash, X } from "lucide-react";
 import { useChatStore, type Chat } from "@/store/chat";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -37,35 +37,45 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
     <Link
       key={chat.id}
       href={`/c/${chat.id}`}
-      className={`flex items-center justify-between hover:bg-muted duration-200 py-1.5 rounded-md ${
+      className={`flex items-center justify-between hover:bg-border duration-200  rounded-md ${
         isEditing ? "" : "px-2"
-      } ${chatId === chat.id ? "bg-muted/90" : ""}`}
+      } ${chatId === chat.id ? "bg-border " : ""}`}
     >
       {isEditing ? (
-        <div className="flex relative w-full">
-          <Input
-            onBlur={handleCancel}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleRename(e.currentTarget.value);
-              else if (e.key === "Escape") handleCancel();
-            }}
-            defaultValue={chat.name}
-            autoFocus
-            type="text"
-            className="w-full rounded-md bg-transparent px-2 py-1 text-sm text-muted-foreground"
-            placeholder="Chat name"
-          />
-        </div>
+        <Input
+          onBlur={handleCancel}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleRename(e.currentTarget.value);
+            else if (e.key === "Escape") handleCancel();
+          }}
+          defaultValue={chat.name}
+          autoFocus
+          type="text"
+          className="w-full rounded-md bg-transparent z-10 px-2 py-1 text-sm text-muted-foreground"
+          placeholder="Chat name"
+        />
       ) : (
         <>
-          <p className=" cursor-pointer truncate">{chat.name}</p>
+          <p className="cursor-pointer truncate py-1.5">{chat.name}</p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="iconSm" variant="ghost" className="rounded-full s">
+              <Button
+                size="iconSm"
+                variant="ghost"
+                className="rounded-full z-10"
+              >
                 <Ellipsis />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() => {
+                  updateChat(chat.id, { pinned: !chat.pinned });
+                }}
+              >
+                <Pin className={`${chat.pinned ? "fill-foreground" : ""}`} />
+                Pin
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   setIsEditing((prev) => !prev);
@@ -83,7 +93,6 @@ export function SidebarItem({ chat, chatId }: SidebarItemProps) {
               >
                 <Trash className="text-destructive" /> Remove
               </DropdownMenuItem>
-              {/* <DropdownMenuItem>Team</DropdownMenuItem> */}
               {/* <DropdownMenuItem>Subscription</DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>

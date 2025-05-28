@@ -9,7 +9,7 @@ import {
 import { useChatStore } from "@/store/chat";
 
 import { usePathname } from "next/navigation";
-import { groupChatsByDate } from "@/lib/utils";
+import { groupChats } from "@/lib/utils";
 import { useMemo } from "react";
 import { SidebarList } from "@/components/layout/sidebarList";
 
@@ -17,7 +17,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const chats = useChatStore((state) => state.chats);
   const pathname = usePathname();
   const chatId = pathname.split("/").at(-1);
-  const groupedChats = useMemo(() => groupChatsByDate(chats), [chats]);
+  const groupedChats = useMemo(() => groupChats(chats), [chats]);
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarContent className="mt-16 ">
