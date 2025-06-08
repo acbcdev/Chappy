@@ -10,7 +10,7 @@ type SidebarListProps = {
 export function SidebarList({ chats, name, chatId }: SidebarListProps) {
   return (
     <SidebarGroup>
-      <h3 className="overflow-hidden px-2 pt-3 pb-2 text-base font-semibold break-all text-ellipsis">
+      <h3 className="overflow-hidden  pt-3 pb-2 text-base font-semibold break-all text-ellipsis">
         {name}
       </h3>
       <div className="space-y-0.5">
