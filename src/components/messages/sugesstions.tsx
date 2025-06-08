@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "motion/react";
 import { PromptSuggestion } from "@/components/ui/prompt-suggestion";
 import { suggestionGroups } from "@/const/suggestions";
 import { type Dispatch, type SetStateAction, useState } from "react";
@@ -44,7 +43,8 @@ export function Suggestions({ setInput }: SuggestionsProps) {
                   ? suggestionGroups
                   : suggestionGroups.slice(0, 3)
               );
-              if (activeCategory !== "") setActiveCategory("");
+              if (activeCategory !== "" && suggestions.length !== 3)
+                setActiveCategory("");
             }}
           >
             {suggestions.length === 3 ? (
@@ -65,7 +65,7 @@ export function Suggestions({ setInput }: SuggestionsProps) {
             <PromptSuggestion
               key={suggestion}
               size={"lg"}
-              highlight={activeCategoryData.highlight}
+              highlight={activeCategoryData?.highlight}
               onClick={() => {
                 setInput(suggestion);
               }}
