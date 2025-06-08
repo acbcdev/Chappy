@@ -10,6 +10,7 @@ export type PromptSuggestionProps = {
   size?: VariantProps<typeof buttonVariants>["size"];
   className?: string;
   highlight?: string;
+  isHighlightMode?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 function PromptSuggestion({
@@ -18,9 +19,9 @@ function PromptSuggestion({
   size,
   className,
   highlight,
+  isHighlightMode,
   ...props
 }: PromptSuggestionProps) {
-  const isHighlightMode = highlight !== undefined && highlight.trim() !== "";
   const content = typeof children === "string" ? children : "";
 
   if (!isHighlightMode) {
@@ -52,9 +53,9 @@ function PromptSuggestion({
     );
   }
 
-  const trimmedHighlight = highlight.trim();
+  const trimmedHighlight = highlight?.trim();
   const contentLower = content.toLowerCase();
-  const highlightLower = trimmedHighlight.toLowerCase();
+  const highlightLower = trimmedHighlight?.toLowerCase() ?? "";
   const shouldHighlight = contentLower.includes(highlightLower);
 
   return (
@@ -88,7 +89,7 @@ function PromptSuggestion({
           return (
             <>
               {before && (
-                <span className="text-muted-foreground whitespace-pre-wrap">
+                <span className="text-muted-foreground/80 whitespace-pre-wrap">
                   {before}
                 </span>
               )}
@@ -96,7 +97,7 @@ function PromptSuggestion({
                 {actualHighlightedText}
               </span>
               {after && (
-                <span className="text-muted-foreground whitespace-pre-wrap">
+                <span className="text-muted-foreground/80 whitespace-pre-wrap">
                   {after}
                 </span>
               )}

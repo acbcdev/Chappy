@@ -4,9 +4,10 @@ import { type Dispatch, type SetStateAction, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 type SuggestionsProps = {
   setInput: Dispatch<SetStateAction<string>>;
+  input: string;
 };
 
-export function Suggestions({ setInput }: SuggestionsProps) {
+export function Suggestions({ setInput, input }: SuggestionsProps) {
   const [activeCategory, setActiveCategory] = useState("");
   const [suggestions, setSuggestions] = useState(suggestionGroups.slice(0, 3));
   const activeCategoryData = suggestionGroups.find(
@@ -65,10 +66,11 @@ export function Suggestions({ setInput }: SuggestionsProps) {
             <PromptSuggestion
               key={suggestion}
               size={"lg"}
-              highlight={activeCategoryData?.highlight}
+              highlight={input}
               onClick={() => {
                 setInput(suggestion);
               }}
+              isHighlightMode
             >
               {suggestion}
             </PromptSuggestion>

@@ -16,6 +16,7 @@ type MessagesProps = {
   error?: Error;
   status: "streaming" | "ready" | "submitted" | "error";
   setInput: Dispatch<SetStateAction<string>>;
+  input: string;
 };
 
 export function Messages({
@@ -24,6 +25,7 @@ export function Messages({
   status,
   error,
   setInput,
+  input,
 }: MessagesProps) {
   const initialMessageCount = useRef(messages.length);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +45,7 @@ export function Messages({
             <h1 className="mb-6 text-4xl font-medium tracking-tight">
               How may I help you?
             </h1>
-            <Suggestions setInput={setInput} />
+            <Suggestions setInput={setInput} input={input} />
           </div>
         )}
 

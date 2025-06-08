@@ -134,6 +134,7 @@ export function Chat({ chatId }: ChatProps) {
     <section className="@container/main relative flex  h-screen flex-col">
       <Messages
         setInput={setInput}
+        input={input}
         messages={messages}
         onReload={reload}
         status={status}
