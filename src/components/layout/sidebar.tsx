@@ -14,7 +14,7 @@ import { groupChats } from "@/lib/utils";
 import { useMemo } from "react";
 import { SidebarList } from "@/components/layout/sidebarList";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { SquarePen } from "lucide-react";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const chats = useChatStore((state) => state.chats);
@@ -26,12 +26,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className="mt-16 ">
         <SidebarMenu>
           <SidebarGroup>
-            <Link href="/?new=true">
+            <Link href={pathname === "/" ? "" : "/?new=true"}>
               <SidebarMenuButton
-                className="[&>svg]:size-7 h-10"
+                className=" h-10"
+                disabled={pathname === "/"}
                 tooltip={"Create a new chat"}
               >
-                <Plus className=" bg-border rounded-full p-1" /> New Chat
+                <SquarePen /> New Chat
               </SidebarMenuButton>
             </Link>
           </SidebarGroup>
